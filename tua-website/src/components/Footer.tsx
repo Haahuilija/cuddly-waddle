@@ -5,6 +5,7 @@ const Footer = () => {
     <footer className="bg-gray-200 text-center py-2">
       <p className="text-sm">
         © {new Date().getFullYear()} Copyright
+        <br></br>
         <a href="https://tuatahkapaa.fi" className="text-green-500 ml-1">
           tuatahkapaa.fi
         </a>

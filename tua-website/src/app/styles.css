@@ -1,75 +1,186 @@
 /* Basic styling */
 body {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-    color: #333;
-    margin: 0;
-    padding: 0;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Banner image styling */
+.banner-image {
+  background-image: url('/images/banner-image.jpeg');
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+/* Header styling */
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: transparent;
+  padding: 20px;
+  text-align: center;
+  z-index: 2;
+}
+
+/* Description text styling */
+.description_h1 {
+  margin-top: 420px;
+}
+
+/* Content container */
+.content-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Bubbles and contact form container */
+.bubbles-form-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Bubble styling */
+.bubble {
+  background-color: #f2f2f2;
+  padding: 20px;
+  text-align: center;
+  flex: 1 0 25%;
+  margin: 10px;
+}
+
+/* Contact form and picture styling */
+.contact-form,
+.entrepreneur-image {
+  flex: 1;
+  margin: 10px;
+}
+
+/* Entrepreneur image styling */
+.entrepreneur-image img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Navigation styling */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  margin-left: 20px;
+}
+
+nav ul li:first-child {
+  margin-left: 0;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
+nav ul li a:hover {
+  color: #666;
+}
+
+/* Footer styling */
+footer {
+  background-color: #f0f0f0;
+  border-top: 1px solid #ccc;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* Button styling */
+button {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #666;
+}
+
+/* Media queries */
+@media screen and (max-width: 768px) {
+  .bubbles-form-container {
+    flex-direction: column;
+  }
+
+  .bubble {
+    flex-basis: 100%;
+  }
+
+  .contact-form,
+  .entrepreneur-image {
+    margin: 10px 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  /* Banner image styling */
+  .banner-image {
+  height: 250px;
   }
   
   /* Header styling */
   header {
-    background-color: #fff;
-    border-bottom: 1px solid #ccc;
-    padding: 20px;
+  padding: 10px;
   }
   
-  /* Navigation styling */
-  nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  /* Bubbles and contact form styling */
+  .bubbles-container {
+  display: block;
   }
   
-  nav ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .bubble {
+  margin-bottom: 20px;
   }
   
-  nav ul li {
-    margin-left: 20px;
-  }
-  
-  nav ul li:first-child {
-    margin-left: 0;
-  }
-  
-  nav ul li a {
-    text-decoration: none;
-    color: #333;
-  }
-  
-  nav ul li a:hover {
-    color: #666;
-  }
-  
-  /* Main content area */
-  main {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 0 20px;
+  .contact-form {
+  margin-top: 20px;
   }
   
   /* Footer styling */
   footer {
-    background-color: #f0f0f0;
-    border-top: 1px solid #ccc;
-    padding: 20px;
+  padding: 10px;
   }
   
   /* Button styling */
   button {
-    background-color: #333;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  font-size: 0.8em;
+  }
   }
   
-  button:hover {
-    background-color: #666;
-  }  
+  @media screen and (max-width: 479px) {
+  /* Bubbles and contact form styling */
+  .bubble {
+  padding: 10px;
+  }
+  
+  h2 {
+  font-size: 1em;
+  }
+  }
