@@ -30,6 +30,7 @@ const ContactForm = () => {
   };
 
   return (
+    <div className="contact-form-container">
     <div className="bubble">
       <h2>Ota yhteyttä</h2>
       {isSent && (
@@ -89,6 +90,7 @@ const ContactForm = () => {
           </button>
         </form>
       )}
+    </div>
     </div>
   );
 };
