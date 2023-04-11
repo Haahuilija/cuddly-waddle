@@ -1,18 +1,24 @@
 import React from 'react';
+import '../app/styles.css';
 
 export interface BubbleProps {
   title: string;
-  content: string;
-  text: string;
+  items: string[];
+  icon: string;
 }
 
-const Bubble = ({ title, content, text }: BubbleProps) => {
+const Bubble: React.FC<BubbleProps> = ({ title, items, icon }) => {
+  const iconSrc = `/img/${icon}`;
+
   return (
-    <div className="flex flex-col items-center justify-center w-full p-6 md:w-1/2 md:p-10">
-      <div className="w-20 h-20 mb-4 rounded-full bg-green-500"></div>
-      <h3 className="mb-2 text-2xl font-bold">{title}</h3>
-      <p className="text-lg text-center">{content}</p>
-      <p className="text-lg text-center">{text}</p>
+    <div className="bubble">
+      <img src={iconSrc} alt={title} />
+      <h2 className="bubble-title">{title}</h2>
+      <ul className="bubble-list">
+        {items.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
     </div>
   );
 };
