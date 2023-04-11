@@ -31,66 +31,66 @@ const ContactForm = () => {
 
   return (
     <div className="contact-form-container">
-    <div className="bubble">
-      <h2>Ota yhteyttä</h2>
-      {isSent && (
-        <p className="text-green-500">Kiitos viestistäsi, vastaamme mahdollisimman pian.</p>
-      )}
-      {!isSent && (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="name">Nimi</label>
-            <input
-              type="text"
-              id="name"
-              required
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="email">Sähköpostiosoite</label>
-            <input
-              type="email"
-              id="email"
-              required
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="message">Millainen teksti on kyseessä</label>
-            <textarea
-              id="message"
-              required
-              value={message}
-              onChange={(event) => setMessage(event.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="schedule">Toivottu aikataulu</label>
-            <input
-              type="text"
-              id="schedule"
-              required
-              value={schedule}
-              onChange={(event) => setSchedule(event.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="other">Muuta</label>
-            <textarea
-              id="other"
-              value={other}
-              onChange={(event) => setOther(event.target.value)}
-            />
-          </div>
-          <button type="submit" disabled={isSending}>
-            {isSending ? 'Lähetetään...' : 'Lähetä'}
-          </button>
-        </form>
-      )}
-    </div>
+      <div className="contact-form">
+        <h2>Ota yhteyttä</h2>
+        {isSent && (
+          <p className="text-green-500">Kiitos viestistäsi, vastaamme mahdollisimman pian.</p>
+        )}
+        {!isSent && (
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="name">Nimi</label>
+              <input
+                type="text"
+                id="name"
+                required
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="email">Sähköpostiosoite</label>
+              <input
+                type="email"
+                id="email"
+                required
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="message">Millainen teksti on kyseessä</label>
+              <textarea
+                id="message"
+                required
+                value={message}
+                onChange={(event) => setMessage(event.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="schedule">Toivottu aikataulu</label>
+              <input
+                type="text"
+                id="schedule"
+                required
+                value={schedule}
+                onChange={(event) => setSchedule(event.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="other">Muuta</label>
+              <textarea
+                id="other"
+                value={other}
+                onChange={(event) => setOther(event.target.value)}
+              />
+            </div>
+            <button type="submit" disabled={isSending}>
+              {isSending ? 'Lähetetään...' : 'Lähetä'}
+            </button>
+          </form>
+        )}
+      </div>
     </div>
   );
 };
