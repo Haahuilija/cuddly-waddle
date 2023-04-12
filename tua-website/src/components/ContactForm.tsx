@@ -15,7 +15,7 @@ const ContactForm = () => {
     event.preventDefault();
     setIsSending(true);
     try {
-      await axios.post('/api/sendEmail', { name, email, message, schedule, other });
+      await axios.post('pages/api/sendEmail', { name, email, message, schedule, other });
       setIsSent(true);
       setName('');
       setEmail('');
