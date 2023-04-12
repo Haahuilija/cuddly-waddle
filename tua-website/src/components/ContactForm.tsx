@@ -10,12 +10,13 @@ const ContactForm = () => {
   const [other, setOther] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSending(true);
     try {
-      await axios.post('pages/api/sendEmail', { name, email, message, schedule, other });
+      await axios.post('/api/sendEmail', { name, email, message, schedule, other });
       setIsSent(true);
       setName('');
       setEmail('');
@@ -24,6 +25,7 @@ const ContactForm = () => {
       setOther('');
     } catch (error) {
       console.error(error);
+      setErrorMessage('Virhe lähetettäessä viestiä, yritä uudelleen myöhemmin');
     } finally {
       setIsSending(false);
     }
@@ -38,6 +40,7 @@ const ContactForm = () => {
         )}
         {!isSent && (
           <form onSubmit={handleSubmit}>
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             <div>
               <label htmlFor="name">Nimi</label>
               <input

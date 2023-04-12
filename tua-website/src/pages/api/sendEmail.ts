@@ -1,8 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import sgMail from '@sendgrid/mail';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { EMAIL_TO, EMAIL_FROM } from '/Users/Saul/projects/tua-website/env';
 
 export default async function sendEmail(
   req: NextApiRequest,
@@ -19,15 +17,15 @@ export default async function sendEmail(
   `;
 
   const msg = {
-    to: process.env.EMAIL_TO!,
-    from: process.env.EMAIL_FROM!,
+    to: EMAIL_TO,
+    from: EMAIL_FROM,
     subject: 'New message from tua-website',
     html: `<p>${content}</p>`,
   };
 
   console.log('Sending email...');
   try {
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
     await sgMail.send(msg);
     console.log('Email sent successfully');
     res.status(200).send('Email sent successfully');
