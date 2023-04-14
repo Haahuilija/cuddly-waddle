@@ -85,7 +85,7 @@ header {
   margin-left: auto;
 }
 
-.bubble img {
+.bubble-image {
   position: relative;
   align-items: flex-start;
   width: 150px;
@@ -129,7 +129,7 @@ header {
     font-size: 20px;
   }
 
-  .bubble img {
+  .bubble-image {
     margin-bottom: 10px;
   }
 }

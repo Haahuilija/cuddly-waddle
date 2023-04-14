@@ -1,5 +1,6 @@
 import React from 'react';
 import '../app/styles.css';
+import Image from 'next/image';
 
 export interface BubbleProps {
   title: string;
@@ -12,7 +13,7 @@ const Bubble: React.FC<BubbleProps> = ({ title, items, img }) => {
 
   return (
     <div className="bubble">
-      <img src={iconSrc} alt={title} />
+      <Image src={iconSrc} alt={title} width={150} height={150} className='bubble-image' />
       <h2 className="bubble-title">{title}</h2>
       <ul className="bubble-list">
         {items.map((item, index) => (
