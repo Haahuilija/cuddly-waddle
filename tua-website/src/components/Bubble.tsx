@@ -4,11 +4,11 @@ import '../app/styles.css';
 export interface BubbleProps {
   title: string;
   items: string[];
-  icon: string;
+  img: string;
 }
 
-const Bubble: React.FC<BubbleProps> = ({ title, items, icon }) => {
-  const iconSrc = `/img/${icon}`;
+const Bubble: React.FC<BubbleProps> = ({ title, items, img }) => {
+  const iconSrc = `${img}`;
 
   return (
     <div className="bubble">
