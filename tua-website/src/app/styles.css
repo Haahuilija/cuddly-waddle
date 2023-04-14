@@ -49,7 +49,7 @@ header {
   margin-top: 50px;
   background-color: rgb(163, 192, 173);
   border-radius: 50%;
-  width: 80vw; /* set width to 80% of viewport width */
+  width: 80vw;
   padding: 30px;
   box-sizing: border-box;
   flex-direction: column;
@@ -142,98 +142,44 @@ header {
   height: 100%;
 }
 
-.contact-form form {
+.contact-form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.contact-form form div {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.contact-form form label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.contact-form form input,
-.contact-form form textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  margin-top: 5px;
-}
-
-.contact-form-container form {
-  display: flex;
-  flex-direction: column;
-  max-width: 500px;
-  width: 100%;
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 800px !important;
-}
-
-.contact-form-container label {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.contact-form-container input,
-.contact-form-container textarea {
+  }
+  
+  .contact-form label {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
   padding: 0.5rem;
-  border-radius: 5px;
+  margin-top: 0.5rem;
   border: 1px solid #ccc;
-  margin-bottom: 1rem;
+  border-radius: 0.25rem;
+  width: 100%;
   font-size: 1rem;
-}
-
-.contact-form-container input[type="submit"] {
-  background-color: #0070f3;
-  color: #fff;
-  border: none;
+  }
+  
+  .contact-form textarea {
+  height: 10rem;
+  }
+  
+  .contact-form button[type="submit"] {
+  margin-top: 1rem;
   padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.contact-form-container input[type="submit"]:hover {
-  background-color: #0060c0;
-}
-
-.contact-form form textarea {
-  height: 150px;
-}
-
-.contact-form-container h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-/* Button styling */
-button {
-  background-color: #333;
+  border-radius: 0.25rem;
+  background-color: #008000;
   color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
+  font-size: 1.2rem;
   cursor: pointer;
-}
-
-button:hover {
-  background-color: #666;
-}
+  }
+  
+  .contact-form button[type="submit"]:hover {
+  background-color: #006400;
+  }
 
 /* Footer styling */
 .footer-container {

@@ -6,24 +6,25 @@ import ContactForm from '../components/ContactForm';
 import Footer from '../components/Footer';
 import '../app/styles.css';
 import { NEXT_PUBLIC_RECAPTCHA_SITE_KEY } from './../../env';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 const IndexPage = () => {
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = `https://www.google.com/recaptcha/api.js?render=${NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`;
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src = `https://www.google.com/recaptcha/api.js?render=${NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`;
+        script.async = true;
+        document.body.appendChild(script);
+    }, []);
 
-  return (
-    <div>
-      <Head>
-        <title>Kielenhuolto ja selkeä kieli - Etusivu</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
-      <Header />
-      <h1 className='description_h1'>Kielenhuolto ja selkeä kieli - monen mielestä varmasti maailman kuivinta hommaa, mun mielestä kuitenkin ihan parasta!</h1>
-      <div className="bubbles-container">
+    return (
+        <div>
+            <Head>
+                <title>Kielenhuolto ja selkeä kieli - Etusivu</title>
+                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            </Head>
+            <Header />
+            <h1 className='description_h1'>Kielenhuolto ja selkeä kieli - monen mielestä varmasti maailman kuivinta hommaa, mun mielestä kuitenkin ihan parasta!</h1>
+            <div className="bubbles-container">
                 <div className="bubble-container">
                     <Bubble img='/bubble-icon-1.png'
                         title="Mitä?"
@@ -67,10 +68,12 @@ const IndexPage = () => {
                     />
                 </div>
             </div>
-            <ContactForm />
+            <GoogleReCaptchaProvider reCaptchaKey={NEXT_PUBLIC_RECAPTCHA_SITE_KEY}>
+                <ContactForm />
+            </GoogleReCaptchaProvider>
             <Footer />
-    </div>
-  );
+        </div>
+    );
 };
 
 export default IndexPage;

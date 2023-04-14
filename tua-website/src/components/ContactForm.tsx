@@ -43,31 +43,31 @@ const ContactForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="contact-form" onSubmit={handleSubmit}>
       <div className="form-group">
-        <label htmlFor="name">Name:</label>
+        <label htmlFor="name">Nimi:</label>
         <input
           type="text"
-          className="form-control"
+          className="form-control form-input"
           id="name"
           value={name}
           onChange={(event) => setName(event.target.value)}
         />
       </div>
       <div className="form-group">
-        <label htmlFor="email">Email address:</label>
+        <label htmlFor="email">Sähköposti:</label>
         <input
           type="email"
-          className="form-control"
+          className="form-control form-input"
           id="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
       </div>
       <div className="form-group">
-        <label htmlFor="message">Message:</label>
+        <label htmlFor="message">Millainen teksti kyseessä:</label>
         <textarea
-          className="form-control"
+          className="form-control form-input"
           id="message"
           rows={5}
           value={message}
@@ -75,32 +75,32 @@ const ContactForm = () => {
         ></textarea>
       </div>
       <div className="form-group">
-        <label htmlFor="schedule">Preferred Schedule:</label>
+        <label htmlFor="schedule">Aikataulu:</label>
         <input
           type="text"
-          className="form-control"
+          className="form-control form-input"
           id="schedule"
           value={schedule}
           onChange={(event) => setSchedule(event.target.value)}
         />
       </div>
       <div className="form-group">
-        <label htmlFor="other">Other:</label>
+        <label htmlFor="other">Muuta:</label>
         <textarea
-          className="form-control"
+          className="form-control form-input"
           id="other"
           rows={3}
           value={other}
           onChange={(event) => setOther(event.target.value)}
         ></textarea>
       </div>
-      {error && <div className="alert alert-danger">{error}</div>}
+      {error && <div className="alert alert-danger error-msg">{error}</div>}
       {success && (
-        <div className="alert alert-success">
+        <div className="alert alert-success success-msg">
           Message sent successfully. Thank you!
         </div>
       )}
-      <button type="submit" className="btn btn-primary">
+      <button type="submit" className="btn btn-primary submit-btn">
         Submit
       </button>
     </form>
