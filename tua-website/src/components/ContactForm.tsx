@@ -97,11 +97,11 @@ const ContactForm = () => {
       {error && <div className="alert alert-danger error-msg">{error}</div>}
       {success && (
         <div className="alert alert-success success-msg">
-          Message sent successfully. Thank you!
+          Viesti lähetetty onnistuneesti. Vastaamme mahdollisimman pian!
         </div>
       )}
       <button type="submit" className="btn btn-primary submit-btn">
-        Submit
+        Lähetä
       </button>
     </form>
   );
