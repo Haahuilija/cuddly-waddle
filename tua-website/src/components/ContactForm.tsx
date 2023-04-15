@@ -50,6 +50,7 @@ const ContactForm = () => {
           type="text"
           className="form-control form-input"
           id="name"
+          placeholder="Etunimi Sukunimi"
           value={name}
           onChange={(event) => setName(event.target.value)}
         />
@@ -60,6 +61,7 @@ const ContactForm = () => {
           type="email"
           className="form-control form-input"
           id="email"
+          placeholder="Sähköpostiosoite johon haluatte meidän vastaavan"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
@@ -80,6 +82,7 @@ const ContactForm = () => {
           type="text"
           className="form-control form-input"
           id="schedule"
+          placeholder="Esim. Kahden viikon sisään, 10.9 mennessä"
           value={schedule}
           onChange={(event) => setSchedule(event.target.value)}
         />
@@ -89,6 +92,7 @@ const ContactForm = () => {
         <textarea
           className="form-control form-input"
           id="other"
+          placeholder="Muuta huomioitavaa, jos sellaista on"
           rows={3}
           value={other}
           onChange={(event) => setOther(event.target.value)}
