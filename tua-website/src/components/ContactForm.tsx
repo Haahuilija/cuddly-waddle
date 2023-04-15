@@ -1,6 +1,6 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
@@ -8,88 +8,106 @@ const ContactForm = () => {
   const [message, setMessage] = useState('');
   const [schedule, setSchedule] = useState('');
   const [other, setOther] = useState('');
-  const [isSending, setIsSending] = useState(false);
-  const [isSent, setIsSent] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsSending(true);
+
+    if (!executeRecaptcha) {
+      setError('Recaptcha not loaded');
+      return;
+    }
+
+    const token = await executeRecaptcha();
+
+    const data = { name, email, message, schedule, other, token };
+
     try {
-      await axios.post('/api/sendEmail', { name, email, message, schedule, other });
-      setIsSent(true);
-      setName('');
-      setEmail('');
-      setMessage('');
-      setSchedule('');
-      setOther('');
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsSending(false);
+      const response = await axios.post('/api/sendEmail', data);
+      if (response.status === 200) {
+        setSuccess(true);
+        setName('');
+        setEmail('');
+        setMessage('');
+        setSchedule('');
+        setOther('');
+      } else {
+        setError('An error occurred');
+      }
+    } catch (err) {
+      setError('An error occurred');
     }
   };
 
   return (
-    <div className="bubble">
-      <h2>Ota yhteyttä</h2>
-      {isSent && (
-        <p className="text-green-500">Kiitos viestistäsi, vastaamme mahdollisimman pian.</p>
+    <form className="contact-form" onSubmit={handleSubmit}>
+      <div className="form-group">
+        <label htmlFor="name">Nimi:</label>
+        <input
+          type="text"
+          className="form-control form-input"
+          id="name"
+          placeholder="Etunimi Sukunimi"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="email">Sähköposti:</label>
+        <input
+          type="email"
+          className="form-control form-input"
+          id="email"
+          placeholder="Sähköpostiosoite johon haluatte meidän vastaavan"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="message">Millainen teksti kyseessä:</label>
+        <textarea
+          className="form-control form-input"
+          id="message"
+          rows={5}
+          value={message}
+          onChange={(event) => setMessage(event.target.value)}
+        ></textarea>
+      </div>
+      <div className="form-group">
+        <label htmlFor="schedule">Aikataulu:</label>
+        <input
+          type="text"
+          className="form-control form-input"
+          id="schedule"
+          placeholder="Esim. Kahden viikon sisään, 10.9 mennessä"
+          value={schedule}
+          onChange={(event) => setSchedule(event.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="other">Muuta:</label>
+        <textarea
+          className="form-control form-input"
+          id="other"
+          placeholder="Muuta huomioitavaa, jos sellaista on"
+          rows={3}
+          value={other}
+          onChange={(event) => setOther(event.target.value)}
+        ></textarea>
+      </div>
+      {error && <div className="alert alert-danger error-msg">{error}</div>}
+      {success && (
+        <div className="alert alert-success success-msg">
+          Viesti lähetetty onnistuneesti. Vastaamme mahdollisimman pian!
+        </div>
       )}
-      {!isSent && (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="name">Nimi</label>
-            <input
-              type="text"
-              id="name"
-              required
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="email">Sähköpostiosoite</label>
-            <input
-              type="email"
-              id="email"
-              required
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="message">Millainen teksti on kyseessä</label>
-            <textarea
-              id="message"
-              required
-              value={message}
-              onChange={(event) => setMessage(event.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="schedule">Toivottu aikataulu</label>
-            <input
-              type="text"
-              id="schedule"
-              required
-              value={schedule}
-              onChange={(event) => setSchedule(event.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="other">Muuta</label>
-            <textarea
-              id="other"
-              value={other}
-              onChange={(event) => setOther(event.target.value)}
-            />
-          </div>
-          <button type="submit" disabled={isSending}>
-            {isSending ? 'Lähetetään...' : 'Lähetä'}
-          </button>
-        </form>
-      )}
-    </div>
+      <button type="submit" className="btn btn-primary submit-btn">
+        Lähetä
+      </button>
+    </form>
   );
 };
 

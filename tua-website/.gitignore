@@ -14,6 +14,7 @@
 
 # production
 /build
+firebase.js
 
 # misc
 .DS_Store
@@ -23,9 +24,12 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+firebase-debug.log
 
 # local env files
 .env*.local
+sendgrid.env
+env.ts
 
 # vercel
 .vercel
@@ -33,3 +37,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+sendgrid.env
