@@ -1,20 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Header from '../components/Header';
 import Bubble from '../components/Bubble';
 import ContactForm from '../components/ContactForm';
 import Footer from '../components/Footer';
 import '../app/styles.css';
-import { NEXT_PUBLIC_RECAPTCHA_SITE_KEY } from './../../env';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
+import { getSecretValues } from './api/secrets';
 
-const IndexPage = () => {
-    useEffect(() => {
-        const script = document.createElement("script");
-        script.src = `https://www.google.com/recaptcha/api.js?render=${NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`;
-        script.async = true;
-        document.body.appendChild(script);
-    }, []);
+export default function IndexPage() {
+  const [reCaptchaSiteKey, setReCaptchaSiteKey] = useState('');
+
+  useEffect(() => {
+    async function fetchSecrets() {
+      const secrets = await getSecretValues();
+      setReCaptchaSiteKey(secrets?.NEXT_PUBLIC_RECAPTCHA_SITE_KEY_TEST || '');
+    }
+
+    fetchSecrets();
+  }, []);
+
+  useEffect(() => {
+    if (reCaptchaSiteKey) {
+      const script = document.createElement("script");
+      script.src = `https://www.google.com/recaptcha/api.js?render=${reCaptchaSiteKey}`;
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, [reCaptchaSiteKey]);
 
     return (
         <div>
@@ -68,12 +81,10 @@ const IndexPage = () => {
                     />
                 </div>
             </div>
-            <GoogleReCaptchaProvider reCaptchaKey={NEXT_PUBLIC_RECAPTCHA_SITE_KEY}>
+            <GoogleReCaptchaProvider reCaptchaKey={reCaptchaSiteKey}>
                 <ContactForm />
             </GoogleReCaptchaProvider>
             <Footer />
         </div>
     );
 };
-
-export default IndexPage;

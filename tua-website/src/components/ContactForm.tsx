@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import verifyRecaptchaToken from '../pages/api/recaptcha';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
@@ -15,16 +16,22 @@ const ContactForm = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+  
     if (!executeRecaptcha) {
       setError('Recaptcha not loaded');
       return;
     }
-
+  
     const token = await executeRecaptcha();
-
+    const recaptchaVerification = await verifyRecaptchaToken(token);
+  
+    if (!recaptchaVerification.success) {
+      setError('Recaptcha verification failed');
+      return;
+    }
+  
     const data = { name, email, message, schedule, other, token };
-
+  
     try {
       const response = await axios.post('/api/sendEmail', data);
       if (response.status === 200) {
@@ -98,12 +105,15 @@ const ContactForm = () => {
           onChange={(event) => setOther(event.target.value)}
         ></textarea>
       </div>
+      <div className="form-group">
       {error && <div className="alert alert-danger error-msg">{error}</div>}
-      {success && (
-        <div className="alert alert-success success-msg">
-          Viesti lähetetty onnistuneesti. Vastaamme mahdollisimman pian!
-        </div>
-      )}
+        {success && (
+          <div className="alert alert-success success-msg">
+            Viesti lähetetty onnistuneesti. Vastaamme mahdollisimman pian!
+          </div>
+        )}
+      </div>
+      <div className="g-recaptcha" data-sitekey="6Letzo8lAAAAAEV5hmLvRtKRenOEkLy8p0cgfh8A"></div>
       <button type="submit" className="btn btn-primary submit-btn">
         Lähetä
       </button>

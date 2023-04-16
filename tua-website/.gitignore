@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+secrets.js
 
 # testing
 /coverage
@@ -28,8 +29,8 @@ firebase-debug.log
 
 # local env files
 .env*.local
-sendgrid.env
 env.ts
+.env.local
 
 # vercel
 .vercel
