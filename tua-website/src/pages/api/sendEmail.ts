@@ -1,21 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import sgMail from '@sendgrid/mail';
-import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import { getSecretValues } from './secrets';
 
 export default async function sendEmail(req: NextApiRequest, res: NextApiResponse) {
-  const { name, email, message, schedule, other, token } = req.body;
+  const { name, email, message, schedule, other} = req.body;
 
   // Get the email address values
   const { EMAIL_FROM, EMAIL_TO, SENDGRID_API_KEY } = await getSecretValues();
-
-  // Verify the reCAPTCHA token
-  try {
-    await GoogleReCaptchaProvider(token);
-  } catch (error) {
-    console.error(error);
-    return res.status(400).send('Invalid reCAPTCHA token');
-  }
 
   // Create the email message
   const msg = {
