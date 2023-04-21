@@ -41,10 +41,10 @@ export default async function sendEmail(req: NextApiRequest, res: NextApiRespons
     sgMail.setApiKey(await SENDGRID_API_KEY || '');
     await sgMail.send(msg);
     console.log('Email sent successfully');
-    res.status(200).send('Email sent successfully');
+    res.status(200).send('Viesti lähetetty! Otamme teihin mahdollisimman pian yhteyttä.');
   } catch (error) {
     console.error(error);
     console.log('Error sending email');
-    res.status(500).send('Error sending email');
+    res.status(500).send('Virhe lähettäessä viestiä.');
   }
 }

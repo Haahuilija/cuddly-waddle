@@ -5,33 +5,13 @@ import Bubble from '../components/Bubble';
 import ContactForm from '../components/ContactForm';
 import Footer from '../components/Footer';
 import '../app/styles.css';
-import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
-import { getSecretValues } from './api/secrets';
 
 export default function IndexPage() {
-  const [reCaptchaSiteKey, setReCaptchaSiteKey] = useState('');
-
-  useEffect(() => {
-    async function fetchSecrets() {
-      const secrets = await getSecretValues();
-      setReCaptchaSiteKey(secrets?.NEXT_PUBLIC_RECAPTCHA_SITE_KEY_TEST || '');
-    }
-
-    fetchSecrets();
-  }, []);
-
-  useEffect(() => {
-    if (reCaptchaSiteKey) {
-      const script = document.createElement("script");
-      script.src = `https://www.google.com/recaptcha/api.js?render=${reCaptchaSiteKey}`;
-      script.async = true;
-      document.body.appendChild(script);
-    }
-  }, [reCaptchaSiteKey]);
 
     return (
         <div>
             <Head>
+                <script src="https://www.google.com/recaptcha/enterprise.js?render=6Letzo8lAAAAAEV5hmLvRtKRenOEkLy8p0cgfh8A"></script>
                 <title>Kielenhuolto ja selkeä kieli - Etusivu</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             </Head>
@@ -81,9 +61,7 @@ export default function IndexPage() {
                     />
                 </div>
             </div>
-            <GoogleReCaptchaProvider reCaptchaKey={reCaptchaSiteKey}>
-                <ContactForm />
-            </GoogleReCaptchaProvider>
+            <ContactForm />
             <Footer />
         </div>
     );

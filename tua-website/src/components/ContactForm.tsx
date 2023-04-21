@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import verifyRecaptchaToken from '../pages/api/recaptcha';
+import { onSubmit, getRecaptchaToken } from '../pages/api/recaptcha';
+import { createAssessment } from '../pages/api/assessment';
+import interpretAssessment from '../pages/api/interpretAssessment';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
@@ -12,29 +13,14 @@ const ContactForm = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  const { executeRecaptcha } = useGoogleReCaptcha();
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-  
-    if (!executeRecaptcha) {
-      setError('Recaptcha not loaded');
-      return;
-    }
-  
-    const token = await executeRecaptcha();
-    const recaptchaVerification = await verifyRecaptchaToken(token);
-  
-    if (!recaptchaVerification.success) {
-      setError('Recaptcha verification failed');
-      return;
-    }
-  
-    const data = { name, email, message, schedule, other, token };
-  
+
+    const data = { name, email, message, schedule, other };
+
     try {
       const response = await axios.post('/api/sendEmail', data);
-      if (response.status === 200) {
+      if (response.status === 200 && riskScore !== null && riskScore >= 0.4) {
         setSuccess(true);
         setName('');
         setEmail('');
@@ -78,7 +64,7 @@ const ContactForm = () => {
         <textarea
           className="form-control form-input"
           id="message"
-          rows={5}
+          rows={8}
           value={message}
           onChange={(event) => setMessage(event.target.value)}
         ></textarea>
@@ -100,21 +86,16 @@ const ContactForm = () => {
           className="form-control form-input"
           id="other"
           placeholder="Muuta huomioitavaa, jos sellaista on"
-          rows={3}
+          rows={5}
           value={other}
           onChange={(event) => setOther(event.target.value)}
         ></textarea>
       </div>
-      <div className="form-group">
-      {error && <div className="alert alert-danger error-msg">{error}</div>}
-        {success && (
-          <div className="alert alert-success success-msg">
-            Viesti lähetetty onnistuneesti. Vastaamme mahdollisimman pian!
-          </div>
-        )}
-      </div>
-      <div className="g-recaptcha" data-sitekey="6Letzo8lAAAAAEV5hmLvRtKRenOEkLy8p0cgfh8A"></div>
-      <button type="submit" className="btn btn-primary submit-btn">
+      <button
+        className="g-recaptcha"
+        data-sitekey="6Letzo8lAAAAAEV5hmLvRtKRenOEkLy8p0cgfh8A"
+        data-callback={onSubmit}
+        data-action="submit">
         Lähetä
       </button>
     </form>

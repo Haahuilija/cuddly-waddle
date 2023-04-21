@@ -232,7 +232,7 @@ label {
   box-sizing: border-box;
 }
 
-.submit-btn {
+.g-recaptcha {
   display: block;
   margin: 0 auto;
   margin-top: 20px;
