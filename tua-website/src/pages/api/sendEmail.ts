@@ -1,29 +1,21 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import sgMail from '@sendgrid/mail';
-import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
+import sgMail, { MailDataRequired } from '@sendgrid/mail'; // Add MailDataRequired import
 import { getSecretValues } from './secrets';
 
 export default async function sendEmail(req: NextApiRequest, res: NextApiResponse) {
-  const { name, email, message, schedule, other, token } = req.body;
+  const { name, email, message, schedule, other } = req.body;
 
   // Get the email address values
   const { EMAIL_FROM, EMAIL_TO, SENDGRID_API_KEY } = await getSecretValues();
 
-  // Verify the reCAPTCHA token
-  try {
-    await GoogleReCaptchaProvider(token);
-  } catch (error) {
-    console.error(error);
-    return res.status(400).send('Invalid reCAPTCHA token');
-  }
-
   // Create the email message
-  const msg = {
-    to: await EMAIL_TO,
-    from: await EMAIL_FROM || 'default@example.com',
+  const msg: MailDataRequired = { // Use MailDataRequired instead of EmailData
+    to: EMAIL_TO || 'default@example.com',
+    from: EMAIL_FROM || 'default@example.com',
     subject: `New message from ${name} (${email})`,
     text: message,
     html: `<p>${message}</p>`,
+    content: [] // Add empty content array
   };
 
   // Add schedule and other if available
@@ -38,13 +30,13 @@ export default async function sendEmail(req: NextApiRequest, res: NextApiRespons
 
   console.log('Sending email...');
   try {
-    sgMail.setApiKey(await SENDGRID_API_KEY || '');
+    sgMail.setApiKey(SENDGRID_API_KEY || 'default');
     await sgMail.send(msg);
     console.log('Email sent successfully');
-    res.status(200).send('Viesti lähetetty! Otamme teihin mahdollisimman pian yhteyttä.');
+    res.status(200).send('Email sent successfully');
   } catch (error) {
     console.error(error);
     console.log('Error sending email');
-    res.status(500).send('Virhe lähettäessä viestiä.');
+    res.status(500).send('Error sending email');
   }
 }

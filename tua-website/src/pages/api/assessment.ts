@@ -9,16 +9,17 @@ import { getRecaptchaToken } from './recaptcha';
  * token: The token obtained from the client on passing the recaptchaSiteKey.
  * recaptchaAction: Action name corresponding to the token.
  */
-async function createAssessment({
-  projectID = "tua-website-1681296175377",
-  recaptchaSiteKey = "6Letzo8lAAAAAEV5hmLvRtKRenOEkLy8p0cgfh8A",
-  recaptchaAction = "submit",
-}: {
-  projectID?: string,
-  recaptchaSiteKey?: string,
-  token?: string,
-  recaptchaAction?: string,
-}): Promise<number | null> {
+export async function createAssessment({
+    projectID = "tua-website-1681296175377",
+    recaptchaSiteKey = "6Letzo8lAAAAAEV5hmLvRtKRenOEkLy8p0cgfh8A",
+    token,
+    recaptchaAction = "submit",
+  }: {
+    projectID?: string,
+    recaptchaSiteKey?: string,
+    token?: string | null,
+    recaptchaAction?: string,
+  }): Promise<number | null> {
   // Create the reCAPTCHA client & set the project path. There are multiple
   // ways to authenticate your client. For more information see:
   // https://cloud.google.com/docs/authentication
