@@ -1,5 +1,5 @@
 import interpretAssessment from './assessment';
-import { getRecaptchaToken } from './recaptcha';
+import { getRecaptchaToken, setRecaptchaToken } from './recaptcha';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const handleFormSubmit = async (
@@ -8,16 +8,13 @@ const handleFormSubmit = async (
   res: NextApiResponse
 ) => {
   try {
-    const token = await getRecaptchaToken();
-    if (!token) {
-      res.status(400).send('reCAPTCHA not verified');
-      return;
-    }
-    await interpretAssessment(token, formData, req, res);
+    const token = await getRecaptchaToken(); // get the token
+    setRecaptchaToken(token, formData, req, res); // set the token
+    await interpretAssessment(token, formData, req, res); // use the token
     res.status(200).send('Message sent successfully');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error sending message');
+    res.status(500).send('Error sending message 3');
   }
 };
 

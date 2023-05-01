@@ -19,7 +19,7 @@ export default async function interpretAssessment(token: string | null, formData
     const { score } = response.data;
     console.log(`reCAPTCHA assessment score: ${score}`);
 
-    if (score < 0.4) {
+    if (score < 0.5) {
       console.log(`reCAPTCHA score too low: ${score}`);
       res.status(400).send('reCAPTCHA score too low');
       return;
@@ -32,4 +32,4 @@ export default async function interpretAssessment(token: string | null, formData
     console.error(error);
     res.status(500).send('Error interpreting reCAPTCHA assessment');
   }
-}
+};

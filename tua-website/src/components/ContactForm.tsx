@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
@@ -8,27 +9,24 @@ const ContactForm = () => {
   const [other, setOther] = useState('');
   const [submitStatus, setSubmitStatus] = useState('');
 
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://www.google.com/recaptcha/enterprise.js?render=6Letzo8lAAAAAEV5hmLvRtKRenOEkLy8p0cgfh8A';
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      const { data: { token } } = await axios.post('../api/recaptcha');
+      console.log('reCAPTCHA token:', token);
+      if (!token) {
+        console.error('reCAPTCHA token is not being passed to the server');
+        throw new Error('reCAPTCHA token not being passed to the server');
+      }
       const response = await fetch('/api/handleFormSubmit', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ name, email, message, schedule, other })
       });
+      console.log('reCAPTCHA token passed in request headers');
       if (response.ok) {
         setSubmitStatus('Message sent successfully');
         setName('');
@@ -37,11 +35,11 @@ const ContactForm = () => {
         setSchedule('');
         setOther('');
       } else {
-        setSubmitStatus('Error sending message');
+        setSubmitStatus('Error sending message 1');
       }
     } catch (error) {
       console.error(error);
-      setSubmitStatus('Error sending message');
+      setSubmitStatus('Error sending message 2');
     }
   };
 
@@ -102,7 +100,6 @@ const ContactForm = () => {
         ></textarea>
       </div>
       <button
-        suppressHydrationWarning
         className="g-recaptcha"
         data-sitekey="6Letzo8lAAAAAEV5hmLvRtKRenOEkLy8p0cgfh8A"
         type="submit">
