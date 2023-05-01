@@ -1,21 +1,28 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import sgMail, { MailDataRequired } from '@sendgrid/mail'; // Add MailDataRequired import
+import sgMail, { MailDataRequired } from '@sendgrid/mail';
 import { getSecretValues } from './secrets';
 
-export default async function sendEmail(req: NextApiRequest, res: NextApiResponse) {
-  const { name, email, message, schedule, other } = req.body;
-
+export default async function sendEmail(
+  name: string,
+  email: string,
+  message: string,
+  schedule: string | undefined,
+  other: string | undefined,
+  token: string | null,
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   // Get the email address values
   const { EMAIL_FROM, EMAIL_TO, SENDGRID_API_KEY } = await getSecretValues();
 
   // Create the email message
-  const msg: MailDataRequired = { // Use MailDataRequired instead of EmailData
+  const msg: MailDataRequired = {
     to: EMAIL_TO || 'default@example.com',
     from: EMAIL_FROM || 'default@example.com',
     subject: `New message from ${name} (${email})`,
     text: message,
     html: `<p>${message}</p>`,
-    content: [] // Add empty content array
+    content: []
   };
 
   // Add schedule and other if available

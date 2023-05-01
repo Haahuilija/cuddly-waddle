@@ -1,8 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { onSubmit, getRecaptchaToken } from '../pages/api/recaptcha';
-import { createAssessment } from '../pages/api/assessment';
-import interpretAssessment from '../pages/api/interpretAssessment';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
@@ -10,28 +6,31 @@ const ContactForm = () => {
   const [message, setMessage] = useState('');
   const [schedule, setSchedule] = useState('');
   const [other, setOther] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState('');
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const data = { name, email, message, schedule, other };
-
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
-      const response = await axios.post('/api/sendEmail', data);
-      if (response.status === 200 && riskScore !== null && riskScore >= 0.4) {
-        setSuccess(true);
+      const response = await fetch('/api/handleFormSubmit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email, message, schedule, other })
+      });
+      if (response.ok) {
+        setSubmitStatus('Message sent successfully');
         setName('');
         setEmail('');
         setMessage('');
         setSchedule('');
         setOther('');
       } else {
-        setError('An error occurred');
+        setSubmitStatus('Error sending message');
       }
-    } catch (err) {
-      setError('An error occurred');
+    } catch (error) {
+      console.error(error);
+      setSubmitStatus('Error sending message');
     }
   };
 
@@ -92,12 +91,13 @@ const ContactForm = () => {
         ></textarea>
       </div>
       <button
+        suppressHydrationWarning
         className="g-recaptcha"
         data-sitekey="6Letzo8lAAAAAEV5hmLvRtKRenOEkLy8p0cgfh8A"
-        data-callback={onSubmit}
-        data-action="submit">
+        type="submit">
         Lähetä
       </button>
+      {submitStatus && <p>{submitStatus}</p>}
     </form>
   );
 };
