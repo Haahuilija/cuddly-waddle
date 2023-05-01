@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
@@ -7,6 +7,17 @@ const ContactForm = () => {
   const [schedule, setSchedule] = useState('');
   const [other, setOther] = useState('');
   const [submitStatus, setSubmitStatus] = useState('');
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.google.com/recaptcha/enterprise.js?render=6Letzo8lAAAAAEV5hmLvRtKRenOEkLy8p0cgfh8A';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -11,7 +11,6 @@ export default function IndexPage() {
     return (
         <div>
             <Head>
-                <script src="https://www.google.com/recaptcha/enterprise.js?render=6Letzo8lAAAAAEV5hmLvRtKRenOEkLy8p0cgfh8A"></script>
                 <title>Kielenhuolto ja selkeä kieli - Etusivu</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             </Head>
