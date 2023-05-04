@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import handleToken from '../pages/api/handleToken';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
@@ -9,38 +10,44 @@ const ContactForm = () => {
   const [other, setOther] = useState('');
   const [submitStatus, setSubmitStatus] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>, token: string) => {
     e.preventDefault();
+    const formData = {
+      name,
+      email,
+      message,
+      schedule,
+      other,
+      token
+    };
+  
     try {
-      const { data: { token } } = await axios.post('../api/recaptcha');
-      console.log('reCAPTCHA token:', token);
-      if (!token) {
-        console.error('reCAPTCHA token is not being passed to the server');
-        throw new Error('reCAPTCHA token not being passed to the server');
-      }
-      const response = await fetch('/api/handleFormSubmit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ name, email, message, schedule, other })
-      });
-      console.log('reCAPTCHA token passed in request headers');
-      if (response.ok) {
-        setSubmitStatus('Message sent successfully');
+      const response = await axios.post('/api/handleToken', formData);
+      if (response.status === 200) {
+        const data = response.data;
+        setSubmitStatus(data.message);
         setName('');
         setEmail('');
         setMessage('');
         setSchedule('');
         setOther('');
       } else {
-        setSubmitStatus('Error sending message 1');
+        throw new Error('Error sending message');
       }
     } catch (error) {
       console.error(error);
-      setSubmitStatus('Error sending message 2');
+      setSubmitStatus('Error sending message');
     }
+  };
+  
+  const getToken = (token: string) => {
+    console.log("Token:", token);
+    return token;
+  };
+  
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const token = await getToken('');
+    handleFormSubmit(e, token);
   };
 
   return (
@@ -102,6 +109,7 @@ const ContactForm = () => {
       <button
         className="g-recaptcha"
         data-sitekey="6Letzo8lAAAAAEV5hmLvRtKRenOEkLy8p0cgfh8A"
+        data-callback={getToken}
         type="submit">
         Lähetä
       </button>

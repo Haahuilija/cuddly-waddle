@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import Header from '../components/Header';
 import Bubble from '../components/Bubble';
-import ContactForm from '../components/ContactForm';
+import ContactForm from '../components/contactForm';
 import Footer from '../components/Footer';
 import '../app/styles.css';
 

@@ -1,8 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import axios from 'axios';
-import sendEmail from './sendEmail';
+import { RecaptchaEnterpriseServiceClient } from '@google-cloud/recaptcha-enterprise';
 
-export default async function interpretAssessment(token: string | null, formData: { name: string, email: string, message: string, schedule: string, other: string }, req: NextApiRequest, res: NextApiResponse) {
+const PROJECT_ID = 'tua-website-1681296175377';
+const SITE_KEY = '6Letzo8lAAAAAEV5hmLvRtKRenOEkLy8p0cgfh8A';
+
+export default async function validateToken(token: string | null, req: any) {
   if (!token) {
     console.error('reCAPTCHA token is not set');
     throw new Error('reCAPTCHA token is missing');
@@ -10,26 +11,38 @@ export default async function interpretAssessment(token: string | null, formData
 
   console.log('Interpreting reCAPTCHA assessment...');
   try {
-    const response = await axios.post(`https://recaptchaenterprise.googleapis.com/v1beta1/projects/tua-website/assessments?key=${process.env.RECAPTCHA_ENTERPRISE_SITE_KEY}`, {
-      "event": {
-        "token": token
-      }
-    });
+    const client = new RecaptchaEnterpriseServiceClient();
+    const assessmentRequest = {
+      assessment: {
+        event: {
+          token: token,
+          siteKey: SITE_KEY,
+        },
+        expectedAttributes: {
+          scoreReasons: true,
+        },
+      },
+      parent: `projects/${PROJECT_ID}`,
+    };
 
-    const { score } = response.data;
+    const [assessment] = await client.createAssessment(assessmentRequest);
+    if (!assessment.tokenProperties?.valid) {
+      console.error(`Invalid reCAPTCHA token: ${assessment.tokenProperties?.invalidReason}`);
+      throw new Error('Invalid reCAPTCHA token');
+    }
+
+    const score = assessment.riskAnalysis?.score;
     console.log(`reCAPTCHA assessment score: ${score}`);
 
-    if (score < 0.5) {
+    if (score === undefined || score === null || score < 0.5) {
       console.log(`reCAPTCHA score too low: ${score}`);
-      res.status(400).send('reCAPTCHA score too low');
-      return;
+      return false;
     }
 
     console.log(`reCAPTCHA score high enough: ${score}`);
-    await sendEmail(formData.name, formData.email, formData.message, formData.schedule, formData.other, token, req, res);
-    res.status(200).send('Email sent successfully');
+    return true;
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error interpreting reCAPTCHA assessment');
+    throw new Error('Error interpreting reCAPTCHA assessment');
   }
 };
